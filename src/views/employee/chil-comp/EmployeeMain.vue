@@ -12,9 +12,10 @@
       height="300"
       :columns="columns"
       :data="employeeList"
+      @on-select="selectEmployee"
     >
-      <template slot-scope="{ row }" slot="class">
-        <span>{{ row.class | getClassName }}</span>
+      <template slot-scope="{ row }" slot="section">
+        <span>{{ row.section | getClassName }}</span>
       </template>
       <template slot-scope="{ row }" slot="birthdate">
         <span>{{ row.birthdate | getBirthDate }}</span>
@@ -25,12 +26,12 @@
       <template slot-scope="{ row }" slot="political">
         <span>{{ row.political | getPoliticalName }}</span>
       </template>
-      <template slot-scope="{ row, index }" slot="action">
+      <template slot-scope="{ row }" slot="action">
         <Button
           type="success"
           size="small"
           style="margin-right: 5px"
-          @click="show(index)"
+          @click="editEmployee(row.id)"
           icon="ios-brush-outline"
           >编辑</Button
         >
@@ -38,14 +39,14 @@
           type="error"
           icon="ios-trash-outline"
           size="small"
-          @click="remove(row)"
+          @click="removeEmployee(row.id, row.name)"
           >删除</Button
         >
       </template>
     </Table>
     <Page :total="100" show-sizer class="page" />
     <!-- 对话框 -->
-    <EmployeeModal :is-show="isAddShow"/>
+    <EmployeeModal :is-show="isAddShow" :edit-employee="oneEmployee" />
   </div>
 </template>
 
@@ -53,7 +54,7 @@
 import EmployeeModal from "./EmployeeModal";
 
 import { columns } from "utils/employeeTitle";
-
+import { getOneEmployee, deleteEmployee } from "network/employee";
 import dayjs from "dayjs";
 export default {
   name: "EmployeeMain",
@@ -72,13 +73,37 @@ export default {
     return {
       columns: columns,
       isAddShow: false,
+      oneEmployee: {},
     };
   },
   methods: {
     addEmployee() {
-      console.log('diaji l ');
       this.isAddShow = !this.isAddShow;
     },
+    async editEmployee(id) {
+      const result = await getOneEmployee(id);
+      this.oneEmployee = result;
+      this.addEmployee();
+    },
+    removeEmployee(id, name) {
+      this.$Modal.confirm({
+        title: "提示",
+        content: `<p>是否删除该员工信息：${name}</p>`,
+        onOk: async () => {
+          const result = await deleteEmployee(id);
+          this.$parent.getAllEmployeeList();
+          result === "删除成功"
+            ? this.$Message.success(`成功删除该员工信息：${name}`)
+            : this.$Message.error(`删除该员工信息：${name}失败`);
+        },
+        onCancel: () => {
+          this.$Message.info(`取消删除该员工信息：${name}`);
+        },
+      });
+    },
+    selectEmployee(selection){
+      console.log(selection);
+    }
   },
   filters: {
     getBirthDate(date) {

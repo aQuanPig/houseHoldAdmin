@@ -19,7 +19,7 @@ const columns = [
   },
   {
     title: "所在部门",
-    slot: "class",
+    slot: "section",
     align: "center",
   },
   {
@@ -57,6 +57,62 @@ const columns = [
     align: "center",
   }
 ]
+const ruleValidate = {
+  name: [
+    {
+      required: true,
+      message: "请填写您的姓名",
+      trigger: "blur",
+    },
+  ],
+  address: [
+    {
+      required: true,
+      message: "请填写您的家庭地址",
+      trigger: "blur",
+    },
+  ],
+  birthdate: [
+    {
+      required: true,
+      message: "请填写您的出生日期",
+      trigger: "blur",
+    },
+  ],
+  number: [
+    {
+      required: true,
+      pattern: "^[1]+[3,8]+\\d{9}$",
+      len: 11,
+      message: "请输入11位数字",
+      trigger: "change",
+    },
+  ],
+  sex: [
+    {
+      required: true,
+      message: "请选择您的性别",
+      trigger: "change",
+    },
+  ],
+  section: [
+    {
+      required: true,
+      type: "number",
+      message: "请选择您的部门",
+      trigger: "change",
+    },
+  ],
+  political: [
+    {
+      required: true,
+      type: "number",
+      message: "请选择您的政治面貌",
+      trigger: "change",
+    },
+  ],
+}
 export {
-  columns
+  columns,
+  ruleValidate
 }

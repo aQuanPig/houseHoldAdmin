@@ -1,5 +1,7 @@
-import { Button, Layout, Sider, Menu, MenuItem, Icon, RadioGroup, Radio, MenuGroup, Submenu, Modal, Badge, BreadcrumbItem, Breadcrumb, Form, FormItem, Input, Select, Option, Table, Page, DatePicker } from 'view-design';
+import { Button, Layout, Sider, Message, Menu, MenuItem, Icon, RadioGroup, Radio, MenuGroup, Submenu, Modal, Badge, BreadcrumbItem, Breadcrumb, Form, FormItem, Input, Select, Option, Table, Page, DatePicker } from 'view-design';
 import Vue from 'vue';
+Vue.prototype.$Message = Message
+Vue.prototype.$Modal = Modal
 Vue.component('DatePicker', DatePicker)
 Vue.component('Radio', Radio)
 Vue.component('RadioGroup', RadioGroup)

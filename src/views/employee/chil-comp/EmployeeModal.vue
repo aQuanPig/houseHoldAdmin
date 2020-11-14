@@ -1,7 +1,12 @@
 <template>
-  <Modal v-model="isModalShow" title="添加新员工~" on-ok="addEmployee">
+  <Modal
+    v-model="isModalShow"
+    :loading="loading"
+    :closable="false"
+    :mask-closable="false"
+  >
     <p slot="header" class="header">
-      <span class="title">添加用户</span>
+      <span class="title">{{ getModalTitle }}</span>
     </p>
     <Form
       ref="employee"
@@ -21,13 +26,13 @@
       </FormItem>
       <FormItem label="性别" prop="sex">
         <RadioGroup v-model="employee.sex">
-          <Radio label="male">男</Radio>
-          <Radio label="female">女</Radio>
+          <Radio label="男">男</Radio>
+          <Radio label="女">女</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label="所在部门" prop="class">
+      <FormItem label="所在部门" prop="section">
         <Select
-          v-model="employee.class"
+          v-model="employee.section"
           placeholder="选择您所在的部门"
           class="item"
         >
@@ -43,12 +48,12 @@
           placeholder="请输入家庭地址"
         />
       </FormItem>
-      <FormItem label="出生日期" >
+      <FormItem label="出生日期">
         <DatePicker
           placeholder="选择您的出生日期"
-          @on-change="dateChange"
           style="width: 200px"
           format="yyyy-MM-dd"
+          :value="employee.birthdate"
         ></DatePicker>
       </FormItem>
       <FormItem label="政治面貌" prop="political">
@@ -63,15 +68,27 @@
         </Select>
       </FormItem>
     </Form>
+    <div slot="footer">
+      <Button type="text" size="large" @click="cancleModal">取消</Button>
+      <Button type="primary" size="large" @click="addEmployee">确定</Button>
+    </div>
   </Modal>
 </template>
 
 <script>
+import { insertEmployee, updateEmployee } from "network/employee";
+import { ruleValidate } from "utils/employeeTitle";
+import dayjs from "dayjs";
 export default {
   name: "EmployeeModal",
-
   props: {
     isShow: Boolean,
+    editEmployee: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -80,80 +97,74 @@ export default {
         name: "",
         sex: "",
         number: "",
-        class: null,
+        section: 0,
         birthdate: null,
         address: "",
-        political: null,
+        political: 0,
       },
-      ruleValidate: {
-        name: [
-          {
-            required: true,
-            message: "请填写您的姓名",
-            trigger: "blur",
-          },
-        ],
-        address: [
-          {
-            required: true,
-            message: "请填写您的家庭地址",
-            trigger: "blur",
-          },
-        ],
-        birthdate: [
-          {
-            required: true,
-            message: "请填写您的出生日期",
-            trigger: "blur",
-          },
-        ],
-        number: [
-          {
-            required: true,
-            pattern: "^[1]+[3,8]+\\d{9}$",
-            len: 11,
-            message: "请输入11位数字",
-            trigger: "change",
-          },
-        ],
-        sex: [
-          {
-            required: true,
-            message: "请选择您的性别",
-            trigger: "change",
-          },
-        ],
-        class: [
-          {
-            required: true,
-            type: "number",
-            message: "请选择您的部门",
-            trigger: "change",
-          },
-        ],
-        political: [
-          {
-            required: true,
-            type: "number",
-            message: "请选择您的政治面貌",
-            trigger: "change",
-          },
-        ],
-      },
+      ruleValidate: ruleValidate,
+      loading: true,
     };
+  },
+  computed: {
+    getModalTitle() {
+      return Object.keys(this.editEmployee).length !== 0
+        ? "编辑员工信息"
+        : "添加员工信息";
+    },
   },
   watch: {
     isShow(newVal) {
       this.isModalShow = newVal;
     },
+    editEmployee(newVal) {
+      newVal.birthdate = dayjs(newVal.birthdate).format("YYYY-MM-DD");
+      this.employee = newVal;
+    },
   },
   methods: {
     addEmployee() {
-      console.log(this.employee);
+      this.$refs["employee"].validate(async (valid) => {
+        if (valid) {
+          if (Object.keys(this.editEmployee).length !== 0) {
+            const result = await updateEmployee(
+              this.employee,
+              this.employee.id
+            );
+            result === "修改员工信息成功"
+              ? this.$Message["success"]("修改员工信息成功")
+              : this.$Message["error"]("修改员工信息失败");
+          } else {
+            const result = await insertEmployee(this.employee);
+            result === "添加员工成功"
+              ? this.$Message["success"]("添加员工成功")
+              : this.$Message["error"]("添加员工失败");
+          }
+          this.$parent.addEmployee();
+          this.$refs["employee"].resetFields(); //重置表单
+          this.$parent.$parent.getAllEmployeeList();
+          this.employee = this.$options.data().employee;
+        } else {
+          this.$Message["error"]("请检查是否输入正确");
+          this.$refs["employee"].resetFields(); //重置表单
+          // setTimeout(() => {
+          //   this.loadingLog = false; //改变loading状态
+          //   this.$nextTick(() => {
+          //     //在数据修改之后立即使用这个方法，使用此方法可以避免出现的问题
+          //     this.loadingLog = true;
+          //   });
+          // });
+        }
+      });
     },
-    dateChange(date) {
-      this.employee.birthdate = date;
-      console.log(typeof this.employee.birthdate,date);
+    cancleModal() {
+      this.$parent.addEmployee();
+      this.employee = this.$options.data().employee;
+      console.log(this.employee);
+      this.$Message["info"]({
+        content: "取消删除操作",
+      });
+      this.$refs["employee"].resetFields(); //重置表单
     },
   },
 };
