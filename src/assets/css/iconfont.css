@@ -1,0 +1,24 @@
+@font-face {font-family: "iconfont";
+  src: url('//at.alicdn.com/t/font_2200180_grswocjl0pk.eot?t=1605180010873'); /* IE9 */
+  src: url('//at.alicdn.com/t/font_2200180_grswocjl0pk.eot?t=1605180010873#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAANcAAsAAAAAB7gAAAMNAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqDGIJwATYCJAMMCwgABCAFhG0HPxu/BsiemjwKwGSg6GzXtYIDZCAe+ObC/iSz23RSZAVMloAdECmE51GYVlWyKp88vUtzmUfwGKGe5CuCTaG/XXMFTtOBnPLo5KTb0wvagpZYYkGRXfV8vEgF/PkJ648/YHD/c7i0CRSO/S3Lac5NvayXxYEU0B43Nh3ZHcgB+S2yi7giFvk4AUkHPYWJx9sHqIvQuoCw0bUV1DNeUVQShaBacTQK51UU2YnsPc4Fvx/+6h8KMpUc2jp19cGC9Q/61bG0v7bfQg+BN54Zyily9EQkLK60zlWKoj3lkiUu25VURUE2VuC/RsC15dWV/uNlhCqUXw905SXZSfEok8Av5fB45KurSDgL3OSwzVKrYrPm/T4vrqFb9zVPPjnwtCxPXQvhwNNTj7n+u/jkTemvpvKS+49bw/7fmZkypWP7wZM2pVtPu3SK4qm15fVOXpbtv1LW76le30yxIZx+7EZT69TjRLSQqWniptQpdWSPP21BCj1KaVczlNhtaeruucs1zZA91G3on3+INuqvqL8qVkRjD8RXnnZs89hXCEh/PPjEV2PvpfiB+DR2r6X9HwePIB076sDbyTizfPvxfF+3ZNGKkzSu0ieOpQC1Lr3Lx0C+tPj9h/2N5S/20yUNR/5f5wg+PfMCb63L4PLidmyB38MDdkVbgHR5NLmU6yZy21VvvlGSUAPkbOJrf3lzcD5BoXkCmTraQ67QERmxPaGiNBCqCmMg6WHK6VJT25WEWBfdHeEgaOQlZBp4B7lGPiAj9gtUtPAfVDUKOSSzQ9MrS53DuuYEJiVk4fM7ujqODDFIMyy8IzsPFKcFAeWJOHMDuJjO84kTRcRj7Mhe7KWIQcNxiEfuaRQEMSYce6Rl6ogkq9nMVH3TVMchNE3AiCKIBS33Dq2jxSLGGy6ahZ+/Q2y5gMINHS3WJ4Rl3MlRP731BSBP0gjUcS1f2eGFbWknYaDVWCyEJnNmEuBoDG2tXuQhmpha2yOcWOkj9FoNlU7nl4fPdwQS9M48ZCEPUbEtV1HiRnZzh2aiyORBAAAAAAA=') format('woff2'),
+  url('//at.alicdn.com/t/font_2200180_grswocjl0pk.woff?t=1605180010873') format('woff'),
+  url('//at.alicdn.com/t/font_2200180_grswocjl0pk.ttf?t=1605180010873') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('//at.alicdn.com/t/font_2200180_grswocjl0pk.svg?t=1605180010873#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-quanping:before {
+  content: "\e607";
+}
+
+.icon-screenfull:before {
+  content: "\e824";
+}
