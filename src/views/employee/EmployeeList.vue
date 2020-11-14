@@ -26,6 +26,7 @@ export default {
   methods: {
     async getAllEmployeeList() {
       const employeeList = await getAllEmployee();
+      console.log(employeeList);
       this.employeeList = employeeList.result;
     },
   },

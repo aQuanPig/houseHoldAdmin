@@ -53,7 +53,7 @@
           placeholder="选择您的出生日期"
           style="width: 200px"
           format="yyyy-MM-dd"
-          :value="employee.birthdate"
+          v-model="employee.birthdate"
         ></DatePicker>
       </FormItem>
       <FormItem label="政治面貌" prop="political">
@@ -98,7 +98,7 @@ export default {
         sex: "",
         number: "",
         section: 0,
-        birthdate: null,
+        birthdate: "",
         address: "",
         political: 0,
       },
@@ -147,13 +147,6 @@ export default {
         } else {
           this.$Message["error"]("请检查是否输入正确");
           this.$refs["employee"].resetFields(); //重置表单
-          // setTimeout(() => {
-          //   this.loadingLog = false; //改变loading状态
-          //   this.$nextTick(() => {
-          //     //在数据修改之后立即使用这个方法，使用此方法可以避免出现的问题
-          //     this.loadingLog = true;
-          //   });
-          // });
         }
       });
     },

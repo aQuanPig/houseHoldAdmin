@@ -1,7 +1,13 @@
 <template>
   <div class="main">
     <div class="header">
-      <Button type="primary" size="large" class="btn">删除</Button>
+      <Button
+        type="primary"
+        size="large"
+        class="btn"
+        @click="removePartEmployee"
+        >删除</Button
+      >
       <Button type="primary" size="large" class="btn" @click="addEmployee"
         >添加</Button
       >
@@ -12,7 +18,7 @@
       height="300"
       :columns="columns"
       :data="employeeList"
-      @on-select="selectEmployee"
+      @on-selection-change="selectEmployee"
     >
       <template slot-scope="{ row }" slot="section">
         <span>{{ row.section | getClassName }}</span>
@@ -47,6 +53,14 @@
     <Page :total="100" show-sizer class="page" />
     <!-- 对话框 -->
     <EmployeeModal :is-show="isAddShow" :edit-employee="oneEmployee" />
+    <Modal
+      v-model="isDeleteShow"
+      title="温馨提示"
+      @on-ok="confirmDelete"
+      @on-cancel="$Message.info(`取消删除部分员工信息`)"
+    >
+    <p>请再次确认是否要删除这些员工信息</p>
+    </Modal>
   </div>
 </template>
 
@@ -74,6 +88,8 @@ export default {
       columns: columns,
       isAddShow: false,
       oneEmployee: {},
+      selectionDelete: [],
+      isDeleteShow: false,
     };
   },
   methods: {
@@ -101,9 +117,36 @@ export default {
         },
       });
     },
-    selectEmployee(selection){
-      console.log(selection);
-    }
+    selectEmployee(selection) {
+      const result = [];
+      selection.filter((item) => {
+        result.push(item.id);
+      });
+      this.selectionDelete = result;
+    },
+    removePartEmployee() {
+      if (this.selectionDelete.length !== 0) {
+        this.$Modal.confirm({
+          title: "谨慎操作",
+          content: `<p>是否删除部分员工信息</p>`,
+          onOk: () => {
+            this.isDeleteShow = !this.isDeleteShow;
+          },
+          onCancel: () => {
+            this.$Message.info(`取消删除操作`);
+          },
+        });
+      } else {
+        this.$Message.info("请选择要删除的员工信息");
+      }
+    },
+    async confirmDelete() {
+      const result = await deleteEmployee(JSON.stringify(this.selectionDelete));
+      this.$parent.getAllEmployeeList();
+      result === "删除成功"
+        ? this.$Message.success(`成功删除部分员工信息`)
+        : this.$Message.error(`删除部分员工信息失败`);
+    },
   },
   filters: {
     getBirthDate(date) {

@@ -2,8 +2,8 @@ import { Button, Layout, Sider, Message, Menu, MenuItem, Icon, RadioGroup, Radio
 import Vue from 'vue';
 Vue.prototype.$Message = Message
 Vue.prototype.$Modal = Modal
-Vue.component('DatePicker', DatePicker)
-Vue.component('Radio', Radio)
+Vue.component('DatePicker', DatePicker);
+Vue.component('Radio', Radio);
 Vue.component('RadioGroup', RadioGroup)
 Vue.component('Button', Button);
 Vue.component('Layout', Layout);
